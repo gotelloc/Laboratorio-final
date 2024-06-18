@@ -19,7 +19,7 @@ jobs:
         run: npm install
             
       - name: Install Node.js dependencies
-        run: npm ci
+        run: npm test
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
@@ -29,6 +29,9 @@ jobs:
           args: >
             -Dsonar.organization=gotelloc 
             -Dsonar.projectKey=gotelloc_Laboratorio-final
+            -Dsonar.sources=src
+            -Dsonar.exclusions=**/node_modules/**,**/*.test.js,**/*.spec.js
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
         
       
             
