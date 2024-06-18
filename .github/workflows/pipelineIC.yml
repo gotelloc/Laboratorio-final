@@ -45,7 +45,6 @@ jobs:
         with:
           args: >
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} 
-            -Dsonar.host.url=https://sonarcloud.io 
             -Dsonar.organization=gotelloc 
             -Dsonar.projectKey=gotelloc_Laboratorio-final
         
