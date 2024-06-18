@@ -1,0 +1,14 @@
+name: Workflow
+on:
+  push:
+jobs:
+  SAST:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Clonacion de codigo
+        uses: actions/checkout@v4
+        
+      - name: Hola Mundo
+        run: | 
+          echo 'Hola mundo!'
