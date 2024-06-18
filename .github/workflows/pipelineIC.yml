@@ -31,10 +31,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          organization: gotelloc
-          projectKey: gotelloc_Laboratorio-final
-          token: ${{ secrets.SONAR_TOKEN }}
           args: >
+            -Dsonar.organization=gotelloc 
+            -Dsonar.projectKey=gotelloc_Laboratorio-final
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.sources=src
             -Dsonar.tests=test
