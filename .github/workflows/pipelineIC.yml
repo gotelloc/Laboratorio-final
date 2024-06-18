@@ -21,8 +21,8 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Run Vitest
-        run: npx vitest --coverage --exclude **/integration.test.ts    
+      - run: npm run build --if-present
+      - run: npm test 
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
