@@ -38,6 +38,14 @@ jobs:
             curl -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/project_branches/rename' -d 'name=main' -d 'project=${{ github.event.repository.name }}'
           fi
           set -e
+      - name: SonarCloud scan
+        uses: SonarSource/sonarcloud-github-action@v2.3.0
+        with:
+          args: >
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} 
+            -Dsonar.host.url=https://sonarcloud.io 
+            -Dsonar.organization=gotelloc 
+            -Dsonar.projectKey=gotelloc_Laboratorio-final
         
       
             
