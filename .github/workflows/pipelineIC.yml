@@ -36,7 +36,6 @@ jobs:
             -Dsonar.projectKey=gotelloc_Laboratorio-final
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.sources=src
-            -Dsonar.tests=test
             -Dsonar.test.inclusions=**/*.spec.js
         
       
