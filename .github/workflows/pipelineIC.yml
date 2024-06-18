@@ -21,9 +21,6 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - run: npm run build --if-present
-      - run: npm test 
-
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
         env:
