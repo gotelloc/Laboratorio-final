@@ -17,15 +17,12 @@ jobs:
             
       - name: Install dependencies
         run: npm install
-            
-      - name: Compilar TypeScript
-        run: npx tsc --noEmit
-  
-      - name: Construir el proyecto
-        run: npx react-scripts build
-  
-      - name: Ejecutar pruebas con cobertura
-        run: npx jest --coverage
+        
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Run Vitest
+        run: npx vitest --coverage --exclude **/integration.test.ts    
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
@@ -36,8 +33,7 @@ jobs:
             -Dsonar.organization=gotelloc 
             -Dsonar.projectKey=gotelloc_Laboratorio-final
             -Dsonar.sources=src
-            -Dsonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.test.tsx,**/*.spec.ts,**/*.spec.tsx
-            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.exclusions=**/node_modules/**
         
       
             
