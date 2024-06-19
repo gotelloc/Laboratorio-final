@@ -21,6 +21,9 @@ jobs:
       
       - name: Build Project
         run: npm run build 
+        
+      - name: Run Tests
+        run: npm test -- --coverage
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
@@ -31,6 +34,11 @@ jobs:
           args: >
             -Dsonar.organization=gotelloc 
             -Dsonar.projectKey=gotelloc_Laboratorio-final
+            -Dsonar.sources=src
+            -Dsonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.spec.ts,**/*.test.tsx,**/*.spec.tsx
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=src/**/*.test.ts,src/**/*.spec.ts,src/**/*.test.tsx,src/**/*.spec.tsx
         
       
             
