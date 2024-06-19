@@ -19,10 +19,8 @@ jobs:
       - name: Install dependencies
         run: npm install
       
-      - name: Construir el proyecto
-        run: npx react-scripts build
-        
-     
+      - name: Build Project
+        run: npm run build 
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
