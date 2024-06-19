@@ -25,7 +25,6 @@ jobs:
           args: >
             -Dsonar.organization=gotelloc 
             -Dsonar.projectKey=gotelloc_Laboratorio-final
-            -Dsonar.sources=src
             -Dsonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.spec.ts,**/*.test.tsx,**/*.spec.tsx
            
 
