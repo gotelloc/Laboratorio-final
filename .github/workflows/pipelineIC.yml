@@ -18,12 +18,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-            
-      - name: Install Dependencies
-        run: npm ci
+
+      - name: Lint
+        run: npm run lint
         
-      - name: Build Project
-        run: npm run build 
+      - name: Run tests and collect coverage
+        run: npm run test
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
@@ -34,9 +34,6 @@ jobs:
           args: >
             -Dsonar.organization=gotelloc 
             -Dsonar.projectKey=gotelloc_Laboratorio-final
-            -Dsonar.sourceEncoding=UTF-8
-            -Dsonar.sources=src
-            -Dsonar.test.inclusions=**/*.spec.js
         
       
             
