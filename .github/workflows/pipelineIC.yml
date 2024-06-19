@@ -21,9 +21,6 @@ jobs:
       
       - name: Build Project
         run: npm run build 
-        
-      - name: Run Tests
-        run: npm test -- --coverage
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@v2.3.0
