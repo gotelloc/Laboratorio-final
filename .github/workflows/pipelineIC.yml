@@ -72,7 +72,9 @@ jobs:
           project: '${{ github.event.repository.name }}'
           path: '.'
           format: 'HTML'
-          outputDirectory: "./dependency-check-report"
-          failBuildOnCVSS: 7
+          out: 'reports'
+          args: >
+            --failOnCVSS 7
+            --enableRetired
     
 
