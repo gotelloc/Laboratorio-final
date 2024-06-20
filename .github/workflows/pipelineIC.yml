@@ -30,3 +30,15 @@ jobs:
             -Dsonar.organization=gotelloc 
             -Dsonar.projectKey=gotelloc_Laboratorio-final
             -Dsonar.exclusions=**/node_modules/**
+            
+      - name: Verify Quality Gate status
+        run: |
+          QUALITY_GATE_STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: \
+            "https://sonarcloud.io/api/qualitygates/project_status?projectKey=gotelloc_Laboratorio-final" \
+            | jq -r '.projectStatus.status')
+          if [ "$QUALITY_GATE_STATUS" != "OK" ]; then
+            echo "Quality Gate failed: $QUALITY_GATE_STATUS"
+            exit 1
+          fi
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
