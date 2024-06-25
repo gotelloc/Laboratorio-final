@@ -112,9 +112,9 @@ jobs:
 
     - name: Docker build
       run: |
-        docker build -t gotelloc/Laboratorio-final:latest .
+        docker build -t gotelloc/laboratorio-final:latest .
     - name: Docker push
       run: |
-        docker push gotelloc/Laboratorio-final:latest
+        docker push gotelloc/laboratorio-final:latest
     
 
