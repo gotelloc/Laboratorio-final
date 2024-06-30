@@ -170,10 +170,6 @@ jobs:
       - name: Push Docker
         run: |
           docker push gotelloc/laboratorio-final:latest
-          
-      - name: Run Docker container
-        run: |
-          docker run -d -p 8080:80 gotelloc/laboratorio-final:latest
 
         
     #  - name: Despliegue
