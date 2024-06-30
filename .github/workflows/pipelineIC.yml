@@ -170,6 +170,10 @@ jobs:
       - name: Push Docker
         run: |
           docker push gotelloc/laboratorio-final:latest
+          
+      - name: Run Docker container
+        run: |
+          docker run -d -p 8080:80 gotelloc/laboratorio-final:latest
 
         
     #  - name: Despliegue
@@ -184,22 +188,8 @@ jobs:
     runs-on: self-hosted
     steps:
 
-      - name: Get Minikube URL for service
-        id: get_minikube_url
-        run: |
-              MINIKUBE_IP=$(minikube ip)
-              SERVICE_PORT=$(kubectl get service laboratorio-final-service -o=jsonpath='{.spec.ports[0].nodePort}')
-              echo "Minikube IP: $MINIKUBE_IP"
-              echo "Service Port: $SERVICE_PORT"
-              echo "::set-output name=minikube_url::http://$MINIKUBE_IP:$SERVICE_PORT"
-
-      - name: Use Minikube URL in subsequent steps
-        run: |
-          MINIKUBE_URL="${{ steps.get_minikube_url.outputs.minikube_url }}"
-          echo "Minikube Service URL: $MINIKUBE_URL"
-
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
-          target: $MINIKUBE_URL
+          target: 'http://localhost:8080'
     
