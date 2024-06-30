@@ -145,10 +145,36 @@ jobs:
     
       - name: Clonacion de codigo
         uses: actions/checkout@v4
+  
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install Yarn
+        run: npm install -g yarn
+  
+      - name: Install dependencies
+        run: yarn install
+  
+      - name: Docker Login
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
         
-      - name: Despliegue
+      - name: Docker build
         run: |
-          kubectl apply -f deploy.yaml
+          docker build --build-arg TMDB_V3_API_KEY=0a5c76f39b37918e45f6a8e56b8509c5 -t gotelloc/laboratorio-final:latest .
+  
+      - name: Push Docker
+        run: |
+          docker push gotelloc/laboratorio-final:latest
+
+        
+    #  - name: Despliegue
+     #   run: |
+      #    kubectl apply -f deploy.yaml
           
   
   #--------------------- DAST ------------------------------------------------------
