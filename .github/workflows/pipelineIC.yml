@@ -99,7 +99,7 @@ jobs:
           path: ${{github.workspace}}/reports
 
       - name: Run Snyk to check for vulnerabilities
-        id: snyk_ scan 
+        id: snyk_scan 
         uses: snyk/actions/node@master
         env:
           SNYK TOKEN:  ${{ secrets.SNYK_TOKEN }} 
