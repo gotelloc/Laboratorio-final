@@ -31,19 +31,27 @@ jobs:
             -Dsonar.projectKey=gotelloc_Laboratorio-final
             -Dsonar.exclusions=**/node_modules/**
             
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       - name: Get Vulnerabilities Badge
         id: get_vulnerabilities
         run: |
-          vulnerabilities=$(curl -s "https://sonarcloud.io/api/project_badges/measure?project=gotelloc_Laboratorio-final&metric=vulnerabilities" | grep -oP '(?<=<text>).*?(?=</text>)')
+          vulnerabilities=$(curl -s "https://sonarcloud.io/api/project_badges/measure?project=gotelloc_Laboratorio-final&metric=vulnerabilities" | jq -r '.measure.value')
           echo "Vulnerabilities: $vulnerabilities"
           echo "::set-output name=vulnerabilities::$vulnerabilities"
 
       - name: Check for vulnerabilities
         run: |
-          if [ ${{ steps.get_vulnerabilities.outputs.vulnerabilities }} -gt 1 ]; then
+          vulnerabilities=${{ steps.get_vulnerabilities.outputs.vulnerabilities }}
+          if [ "$vulnerabilities" -gt 1 ]; then
             echo "There are more than 1 vulnerabilities. Failing the job."
             exit 1
+          else
+            echo "Number of vulnerabilities is acceptable: $vulnerabilities"
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
       - name: Verify Quality Gate status
         run: |
