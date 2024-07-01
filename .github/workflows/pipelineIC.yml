@@ -33,7 +33,7 @@ jobs:
             
       - name: Validate Quality Gate
         run: |
-          qualitygate=$(curl -f -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/qualitygates/project_status?projectKey=gotelloc_Laboratorio-final')
+          qualitygate=$(curl -f -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/qualitygates/project_status?projectKey=gotelloc_Laboratorio-final&branch=feature-Gonzalo-Tello')
           qualitygateStatus=$(echo "$qualitygate" | jq .projectStatus.status | sed -e 's/^"//' -e 's/"$//')
   
           case $qualitygateStatus in
@@ -51,20 +51,7 @@ jobs:
                 ;;
             esac
             
-      - name: Verify Quality Gate status
-        run: |
-          echo "Checking Quality Gate status..."
-          SONAR_STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: \
-          "https://sonarcloud.io/api/qualitygates/project_status?projectKey=gotelloc_Laboratorio-final" | jq -r .projectStatus.status)
-          if [ "$SONAR_STATUS" != "OK" ]; then
-            echo "Quality Gate failed: $SONAR_STATUS"
-            exit 1
-          else
-            echo "Quality Gate passed: $SONAR_STATUS"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      
           
 #--------------------- SCA -------------------------------------------
   SCA:
