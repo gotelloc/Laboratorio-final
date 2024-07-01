@@ -33,7 +33,7 @@ jobs:
             
       - name: Validate Quality Gate
         run: |
-          qualitygate=$(curl -f -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/qualitygates/project_status?projectKey=gotelloc_Laboratorio-final&branch=feature-Gonzalo-Tello')
+          qualitygate=$(curl -f -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/qualitygates/project_status?projectKey=gotelloc_Laboratorio-final')
           qualitygateStatus=$(echo "$qualitygate" | jq .projectStatus.status | sed -e 's/^"//' -e 's/"$//')
   
           case $qualitygateStatus in
