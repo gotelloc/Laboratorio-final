@@ -104,7 +104,7 @@ jobs:
         env:
           SNYK TOKEN:  ${{ secrets.SNYK_TOKEN }} 
         with:
-          args: --all-projects --severity-threshold=high --json > snyk-output.json
+          args: --all-projects --severity-threshold=medium --json > snyk-output.json
           
   # ----------------- Docker Build Image ----------------------------------------
   
@@ -141,10 +141,29 @@ jobs:
         docker build --build-arg TMDB_V3_API_KEY=0a5c76f39b37918e45f6a8e56b8509c5 -t gotelloc/laboratorio-final:latest .
     
     - name: Run Trivy vulnerability scanner
+      id: trivy-scan
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: 'gotelloc/laboratorio-final:latest'
-        format: 'table'
+        format: 'json'
+        output: 'trivy-report.json'
+        
+    - name: Analyze Trivy report
+      run: |
+        critical_vulnerabilities=$(jq '[.Results[].Vulnerabilities[] | select(.Severity == "CRITICAL")] | length' trivy-report.json)
+        echo "Critical vulnerabilities: $critical_vulnerabilities"
+        if [ "$critical_vulnerabilities" -gt 0 ]; then
+          echo "Critical vulnerabilities found. Failing the job."
+          exit 1
+        else
+          echo "No critical vulnerabilities found."
+        fi
+
+    - name: Upload Trivy report
+      uses: actions/upload-artifact@v2
+      with:
+        name: trivy-report
+        path: trivy-report.json
     
     - name: Docker push
       run: |
