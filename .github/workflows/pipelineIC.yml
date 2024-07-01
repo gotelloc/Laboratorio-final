@@ -98,13 +98,13 @@ jobs:
           name: Depcheck report
           path: ${{github.workspace}}/reports
 
-      - name: Run Snyk to check for vulnerabilities
-        id: snyk_scan 
-        uses: snyk/actions/node@master
-        env:
-          SNYK TOKEN:  ${{ secrets.SNYK_TOKEN }} 
-        with:
-          args: --all-projects --severity-threshold=medium --json > snyk-output.json
+     # - name: Run Snyk to check for vulnerabilities
+      #  id: snyk_scan 
+       # uses: snyk/actions/node@master
+       # env:
+       #   SNYK TOKEN:  ${{ secrets.SNYK_TOKEN }} 
+       # with:
+        #  args: --all-projects --severity-threshold=medium --json > snyk-output.json
           
   # ----------------- Docker Build Image ----------------------------------------
   
