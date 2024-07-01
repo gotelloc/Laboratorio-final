@@ -31,27 +31,28 @@ jobs:
             -Dsonar.projectKey=gotelloc_Laboratorio-final
             -Dsonar.exclusions=**/node_modules/**
             
-      - name: Install jq
-        run: sudo apt-get install -y jq
-
-      - name: Get Vulnerabilities Badge
-        id: get_vulnerabilities
+      - name: Validate Quality Gate
         run: |
-          vulnerabilities=$(curl -s "https://sonarcloud.io/api/project_badges/measure?project=gotelloc_Laboratorio-final&metric=vulnerabilities" | jq -r '.measure.value')
-          echo "Vulnerabilities: $vulnerabilities"
-          echo "::set-output name=vulnerabilities::$vulnerabilities"
-
-      - name: Check for vulnerabilities
-        run: |
-          vulnerabilities=${{ steps.get_vulnerabilities.outputs.vulnerabilities }}
-          if [ "$vulnerabilities" -gt 1 ]; then
-            echo "There are more than 1 vulnerabilities. Failing the job."
-            exit 1
-          else
-            echo "Number of vulnerabilities is acceptable: $vulnerabilities"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          idanalisis=$(curl -f -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/ce/component?pet-clinic')
+          idanalisisParse=$(echo "$idanalisis" | jq .current.analysisId | sed -e 's/^"//' -e 's/"$//')
+  
+          qualitygate=$(curl -f -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/qualitygates/project_status?analysisId=$idanalisisParse')
+          qualitygateStatus=$(echo "$qualitygate" | jq .projectStatus.status | sed -e 's/^"//' -e 's/"$//')
+  
+          case $qualitygateStatus in
+              *"OK"*)
+                echo "Proyecto Cumple con quality gate"
+                exit 0
+                ;;
+              *"ERROR"*)
+                echo "Proyecto NO cumple con QualityGate"
+                exit 1
+                ;;
+              *)
+                echo "Proyecto NO cumple"
+                exit 1
+                ;;
+            esac
             
       - name: Verify Quality Gate status
         run: |
