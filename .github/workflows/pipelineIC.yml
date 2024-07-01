@@ -150,7 +150,7 @@ jobs:
         
     - name: Analyze Trivy report
       run: |
-        critical_vulnerabilities=$(jq '[.Results[].Vulnerabilities[] | select(.Severity == "CRITICAL")] | length' trivy-report.json)
+        critical_vulnerabilities=$(jq '[.Results[].Vulnerabilities[] | select(.Severity == "MEDIUM")] | length' trivy-report.json)
         echo "Critical vulnerabilities: $critical_vulnerabilities"
         if [ "$critical_vulnerabilities" -gt 0 ]; then
           echo "Critical vulnerabilities found. Failing the job."
