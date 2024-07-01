@@ -31,6 +31,20 @@ jobs:
             -Dsonar.projectKey=gotelloc_Laboratorio-final
             -Dsonar.exclusions=**/node_modules/**
             
+      - name: Get Vulnerabilities Badge
+        id: get_vulnerabilities
+        run: |
+          vulnerabilities=$(curl -s "https://sonarcloud.io/api/project_badges/measure?project=gotelloc_Laboratorio-final&metric=vulnerabilities" | grep -oP '(?<=<text>).*?(?=</text>)')
+          echo "Vulnerabilities: $vulnerabilities"
+          echo "::set-output name=vulnerabilities::$vulnerabilities"
+
+      - name: Check for vulnerabilities
+        run: |
+          if [ ${{ steps.get_vulnerabilities.outputs.vulnerabilities }} -gt 1 ]; then
+            echo "There are more than 1 vulnerabilities. Failing the job."
+            exit 1
+          fi
+            
       - name: Verify Quality Gate status
         run: |
           echo "Checking Quality Gate status..."
